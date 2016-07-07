@@ -1,0 +1,17 @@
+@import 'colors';
+
+header {
+  background-color: $header-background;
+  width: 100%;
+  height: 90px;
+  margin-top: 0;
+
+  h1 {
+    text-align: center;
+    margin: 0;
+    padding-top: 20px;
+
+  }
+
+
+}

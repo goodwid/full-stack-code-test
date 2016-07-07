@@ -54,7 +54,7 @@
 	
 	var _codeTest2 = _interopRequireDefault(_codeTest);
 	
-	__webpack_require__(18);
+	__webpack_require__(22);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -31565,7 +31565,7 @@
 	
 	var _components2 = _interopRequireDefault(_components);
 	
-	var _services = __webpack_require__(15);
+	var _services = __webpack_require__(19);
 	
 	var _services2 = _interopRequireDefault(_services);
 	
@@ -32004,7 +32004,9 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var map = {
-		"./app/app.js": 9
+		"./app/app.js": 9,
+		"./placeAdd/placeAdd.js": 15,
+		"./placeList/placeList.js": 17
 	};
 	function webpackContext(req) {
 		return __webpack_require__(webpackContextResolve(req));
@@ -32043,16 +32045,35 @@
 	exports.default = {
 	  template: _app2.default,
 	  controllerAs: 'app',
-	  controller: function controller() {
-	    this.styles = _app4.default;
-	  }
+	  controller: controller
 	};
+	
+	
+	controller.inject = ['placeService'];
+	
+	function controller(placeService) {
+	  var _this = this;
+	
+	  this.styles = _app4.default;
+	
+	  this.newPlace = function (place) {
+	    placeService.add(place).then(function (place) {
+	      return _this.data.push(place);
+	    }).catch(function (err) {
+	      return console.log(err);
+	    });
+	  };
+	
+	  placeService.get().then(function (places) {
+	    _this.data = places;
+	  });
+	}
 
 /***/ },
 /* 10 */
 /***/ function(module, exports) {
 
-	module.exports = "<main> <header> <h1>Test</h1> </header> </main>";
+	module.exports = "<main> <header> <h2>Full stack code test</h2> </header> <place-list data=app.data></place-list> <place-add add=app.newPlace(place)></place-add> </main>";
 
 /***/ },
 /* 11 */
@@ -32089,7 +32110,7 @@
 	
 	
 	// module
-	exports.push([module.id, "header {\n  background-color: #efe;\n  width: 100%;\n  height: 90px;\n  margin-top: 0; }\n  header h1 {\n    text-align: center;\n    margin: 0;\n    padding-top: 20px; }\n", "", {"version":3,"sources":["/./src/app/src/components/app/app.scss","/./src/app/src/scss/includes/_colors.scss"],"names":[],"mappings":"AAEA;EACE,uBCFsB;EDGtB,YAAY;EACZ,aAAa;EACb,cAAc,EAUf;EAdD;IAOI,mBAAmB;IACnB,UAAU;IACV,kBAAkB,EAEnB","file":"app.scss","sourcesContent":["@import 'colors';\n\nheader {\n  background-color: $header-background;\n  width: 100%;\n  height: 90px;\n  margin-top: 0;\n\n  h1 {\n    text-align: center;\n    margin: 0;\n    padding-top: 20px;\n\n  }\n\n\n}\n","$basic-color: blue;\n$header-background: #efe;\n"],"sourceRoot":"webpack://"}]);
+	exports.push([module.id, "header {\n  background-color: #6fb2e3;\n  width: 100%;\n  height: 90px;\n  margin-top: 0;\n  border: 1px solid red; }\n  header h2 {\n    text-align: center;\n    margin: 0;\n    padding-top: 20px; }\n", "", {"version":3,"sources":["/./src/app/src/components/app/app.scss","/./src/app/src/scss/includes/_colors.scss"],"names":[],"mappings":"AAEA;EACE,0BCHyB;EDIzB,YAAY;EACZ,aAAa;EACb,cAAc;EACd,sBAAsB,EAUvB;EAfD;IAQI,mBAAmB;IACnB,UAAU;IACV,kBAAkB,EAEnB","file":"app.scss","sourcesContent":["@import 'colors';\n\nheader {\n  background-color: $header-background;\n  width: 100%;\n  height: 90px;\n  margin-top: 0;\n  border: 1px solid red;\n\n  h2 {\n    text-align: center;\n    margin: 0;\n    padding-top: 20px;\n\n  }\n\n\n}\n","$header-background: #6fb2e3;\n$bg-color: #4490e0;\n"],"sourceRoot":"webpack://"}]);
 	
 	// exports
 
@@ -32409,6 +32430,75 @@
 	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _placeAdd = __webpack_require__(16);
+	
+	var _placeAdd2 = _interopRequireDefault(_placeAdd);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.default = {
+	  template: _placeAdd2.default,
+	  controllerAs: 'placeAdd',
+	  bindings: {
+	    add: '&'
+	  },
+	  controller: function controller() {
+	    var _this = this;
+	
+	    this.submit = function () {
+	      var place = _this.place;
+	      _this.add({ place: place });
+	      _this.place = {};
+	    };
+	  }
+	};
+
+/***/ },
+/* 16 */
+/***/ function(module, exports) {
+
+	module.exports = "<section> <h3>Add a new place</h3> <form name=form ng-submit=placeAdd.submit()> <input ng-model=placeAdd.place.name placeholder=name><br> <input ng-model=placeAdd.place.description placeholder=description><br> <button type=submit>Add a place</button> </form> </section>";
+
+/***/ },
+/* 17 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _placeList = __webpack_require__(18);
+	
+	var _placeList2 = _interopRequireDefault(_placeList);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.default = {
+	  template: _placeList2.default,
+	  controllerAs: 'placeList',
+	  bindings: {
+	    data: '<'
+	  }
+	};
+
+/***/ },
+/* 18 */
+/***/ function(module, exports) {
+
+	module.exports = "<section> <p>This is a list of the places I've visited</p> <ul> <li ng-repeat=\"place in placeList.data\"> Place: {{place.name}}<br> Description: {{place.description}} </li> </ul> </section>";
+
+/***/ },
+/* 19 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
 		value: true
 	});
 	
@@ -32426,7 +32516,7 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	var reqContext = __webpack_require__(16);
+	var reqContext = __webpack_require__(20);
 	
 	var services = _angular2.default.module('services', []);
 	
@@ -32438,11 +32528,11 @@
 	exports.default = services.name;
 
 /***/ },
-/* 16 */
+/* 20 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var map = {
-		"./albumService.js": 17
+		"./placeService.js": 21
 	};
 	function webpackContext(req) {
 		return __webpack_require__(webpackContextResolve(req));
@@ -32455,11 +32545,11 @@
 	};
 	webpackContext.resolve = webpackContextResolve;
 	module.exports = webpackContext;
-	webpackContext.id = 16;
+	webpackContext.id = 20;
 
 
 /***/ },
-/* 17 */
+/* 21 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -32467,24 +32557,19 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.default = albumService;
-	albumService.$inject = ['$http', 'apiUrl'];
+	exports.default = placeService;
+	placeService.$inject = ['$http', 'apiUrl'];
 	
-	function albumService($http, apiUrl) {
+	function placeService($http, apiUrl) {
 	
 	  return {
 	    get: function get() {
-	      return $http.get(apiUrl + '/album').then(function (r) {
+	      return $http.get(apiUrl + '/place').then(function (r) {
 	        return r.data;
 	      });
 	    },
-	    add: function add(album) {
-	      return $http.post(apiUrl + '/album', album).then(function (r) {
-	        return r.data;
-	      });
-	    },
-	    delete: function _delete(albumId) {
-	      return $http.delete(apiUrl + '/album/' + albumId).then(function (r) {
+	    add: function add(place) {
+	      return $http.post(apiUrl + '/place', place).then(function (r) {
 	        return r.data;
 	      });
 	    }
@@ -32492,13 +32577,13 @@
 	}
 
 /***/ },
-/* 18 */
+/* 22 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 	
 	// load the styles
-	var content = __webpack_require__(19);
+	var content = __webpack_require__(23);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(14)(content, {});
@@ -32518,7 +32603,7 @@
 	}
 
 /***/ },
-/* 19 */
+/* 23 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(13)();
@@ -32526,7 +32611,7 @@
 	
 	
 	// module
-	exports.push([module.id, "body {\n  margin: 0;\n  padding: 0; }\n", "", {"version":3,"sources":["/./app/src/scss/main.scss"],"names":[],"mappings":"AAEA;EACE,UAAU;EACV,WAAW,EACZ","file":"main.scss","sourcesContent":["@import 'colors';\n\nbody {\n  margin: 0;\n  padding: 0;\n}\n"],"sourceRoot":"webpack://"}]);
+	exports.push([module.id, "body {\n  margin: 0;\n  padding: 0;\n  background-color: #4490e0; }\n", "", {"version":3,"sources":["/./app/src/scss/main.scss","/./app/src/scss/includes/_colors.scss"],"names":[],"mappings":"AAEA;EACE,UAAU;EACV,WAAW;EACX,0BCJgB,EDKjB","file":"main.scss","sourcesContent":["@import 'colors';\n\nbody {\n  margin: 0;\n  padding: 0;\n  background-color: $bg-color;\n}\n","$header-background: #6fb2e3;\n$bg-color: #4490e0;\n"],"sourceRoot":"webpack://"}]);
 	
 	// exports
 

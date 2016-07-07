@@ -1,10 +1,11 @@
 const express = require('express');
 const app = module.exports = express();
 const morgan = require('morgan');
+const cors = require('./cors')('*');
 const places = require('./place-route');
 app.use(morgan('dev'));
 
-
+app.use(cors);
 const public = __dirname + '/../public';
 app.use(express.static(public));
 

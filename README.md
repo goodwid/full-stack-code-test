@@ -11,6 +11,7 @@ To run:
 - run the following commands
 
 <pre>
+export MONGO_URI=mongodb://localhost/test
 cd app && npm i
 npm run build
 cd ../server && npm i

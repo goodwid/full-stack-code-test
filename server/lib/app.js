@@ -1,18 +1,17 @@
-const express = require('express');
-const app = module.exports = express();
-const morgan = require('morgan');
-const cors = require('./cors')('*');
-const places = require('./place-route');
-app.use(morgan('dev'));
+const koa = require('koa');
+const app = module.exports = koa();
+const bodyParser = require('koa-bodyparser');
+const places = require('./place-koa-route');
 
-app.use(cors);
-const public = __dirname + '/../public';
-app.use(express.static(public));
-
-app.use('/api/place', places);
-
-// eslint-disable-next-line  no-unused-vars
-app.use((err, req, res, next) => {
-  console.error(err);
-  res.status(err.code||500).json({error: err.error || 'Server error', msg: err.msg});
+app.use(function *(next){
+  var start = new Date;
+  yield next;
+  var ms = new Date - start;
+  this.set('X-Response-Time', ms + 'ms');
 });
+
+app.use(bodyParser());
+
+app
+  .use(places.routes())
+  .use(places.allowedMethods());

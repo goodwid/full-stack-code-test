@@ -3,9 +3,19 @@ const Place = require('./place-model');
 
 
 module.exports = router
-  .get('/', function * (next) {
-    this.body = yield Place.find().lean();
+  .get('/api/place', function * () {
+    try {
+      this.body = yield Place.find().lean();
+    }
+    catch(err) {
+      this.throw('Woops!', 404);
+    }
   })
-  .post('/', function * (next) {
-    this.body = yield new Place(this.request.body).save();
+  .post('/api/place', function * () {
+    try {
+      this.body = yield new Place(this.request.body).save();
+    }
+    catch(err) {
+      this.throw ('' + err);
+    }
   });

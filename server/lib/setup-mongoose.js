@@ -1,6 +1,8 @@
 const mongoose = require( 'mongoose' );
 
-const dbURI = process.env.MONGO_URI;
+//const dbURI = process.env.MONGO_URI;
+
+const dbURI = 'mongodb://localhost/fullstackcodetest';
 
 mongoose.Promise = Promise;
 mongoose.connect( dbURI );
